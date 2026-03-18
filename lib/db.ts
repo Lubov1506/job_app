@@ -1,0 +1,43 @@
+import mongoose, { mongo } from "mongoose"
+const MONGODB_URL = process.env.MONGODB_URL
+
+interface MongooseCache {
+  conn: typeof mongoose | null
+  promise: Promise<typeof mongoose> | null
+}
+
+declare global {
+  var mongoose: MongooseCache | undefined
+}
+
+const cached: MongooseCache = global.mongoose || { conn: null, promise: null }
+
+if (!global.mongoose) {
+  global.mongoose = cached
+}
+async function connectDB() {
+  if (!MONGODB_URL) {
+    throw new Error(
+      "Please, define the MONGODB_URL environment variable inside .env"
+    )
+  }
+  if (cached.conn) {
+    return cached.conn
+  }
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+    }
+    cached.promise = mongoose.connect(MONGODB_URL, opts).then((mongoose) => {
+      return mongoose
+    })
+  }
+  try {
+    cached.conn = await cached.promise
+  } catch (err) {
+    cached.promise = null
+    throw err
+  }
+  return cached.conn
+}
+export default connectDB
