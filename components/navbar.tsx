@@ -16,12 +16,15 @@ export default function Navbar() {
       </div>
       <div className='flex items-center gap-2 px-2'>
         <Link href='/sign-in'>
-          <Button className='text-gray-700 hover:text-primary' variant='ghost'>
+          <Button
+            className='text-gray-700 hover:text-primary bg-transparent '
+            variant='ghost'
+          >
             Log In
           </Button>
         </Link>
         <Link href='/sign-up'>
-          <Button className='bg-primary hover:bg-primary/90'>
+          <Button className=''>
             Start for free
           </Button>
         </Link>
