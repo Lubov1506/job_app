@@ -34,8 +34,8 @@ export default function SignIn() {
         password,
         email,
       })
-      if (result.error) {
-        setError(result.error.message ?? "Failed to sign up")
+      if (result.error) {        
+        setError(result.error.message ?? "Failed to sign in")
       } else {
         router.push("/dashboard")
       }
@@ -99,7 +99,7 @@ export default function SignIn() {
               className='w-full bg-primary hover:bg-primary/90'
               disabled={isLoading}
             >
-              {isLoading ? "Signing in..." : "Sign Up"}
+              {isLoading ? "Signing in..." : "Sign In"}
             </Button>
 
             <p className='space-x-2 text-center text-sm text-gray-600'>

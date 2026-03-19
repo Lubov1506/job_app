@@ -69,7 +69,7 @@ const JobApplicationSchema = new Schema<IJobApplication>(
       type: String,
     },
     appliedDate: {
-      type: DataTransfer,
+      type: Date,
     },
     tags: [
       {
