@@ -19,7 +19,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
-import { Button } from "@base-ui/react"
 import CreateJobApplicationDialog from "./create-job-dialog"
 
 interface KanbanBoardProps {
