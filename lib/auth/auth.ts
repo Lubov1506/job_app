@@ -19,6 +19,8 @@ export const auth = betterAuth({
       create: {
         after: async (user) => {
           if (user.id) {
+            console.log(user, 'init');
+            
             await initializeUserBoard(user.id)
           }
         },
@@ -36,7 +38,6 @@ export async function signOut() {
   const result = await auth.api.signOut({
     headers: await headers(),
   })
-  console.log(result)
   if (result.success) {
     redirect("/sign-in")
   }
