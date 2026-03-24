@@ -95,6 +95,7 @@ export async function updateJobApplication(
     order?: number
     description?: string
     notes?: string
+    status?: string
   }
 ) {
   const session = await getSession()
@@ -102,6 +103,7 @@ export async function updateJobApplication(
     return { error: "Unauthorized" }
   }
   const jobApplication = await JobApplication.findById(id)
+
   if (!jobApplication) {
     return { error: "Job application not found" }
   }
@@ -120,14 +122,18 @@ export async function updateJobApplication(
     order: number
     description: string
     notes: string
+    status: string
   }> = otherUpdates
+
   const currentColumnId = jobApplication.columnId.toString()
   const newColumnId = columnId?.toString()
+
   const isMovingToDifferentColumn =
     newColumnId && newColumnId !== currentColumnId
+
   if (isMovingToDifferentColumn) {
     await Column.findByIdAndUpdate(currentColumnId, {
-      $pull: { jobApplication: id },
+      $pull: { jobApplications: id },
     })
     const jobsInTargetColumn = await JobApplication.find({
       columnId: newColumnId,
@@ -160,7 +166,7 @@ export async function updateJobApplication(
     updatesToApply.order = newOrderValue
 
     await Column.findByIdAndUpdate(newColumnId, {
-      $push: { jobApplication: id },
+      $push: { jobApplications: id },
     })
   } else if (order !== undefined && order !== null) {
     const otherJobsInColumn = await JobApplication.find({
@@ -179,8 +185,10 @@ export async function updateJobApplication(
         : currentPositionIndex
 
     const newOrderValue = order * 100
+
     if (order < oldPositionIndex) {
       const jobsToShiftDown = otherJobsInColumn.slice(order, oldPositionIndex)
+
       for (const job of jobsToShiftDown) {
         await JobApplication.findByIdAndUpdate(job._id, {
           $set: { order: job.order + 100 },
@@ -188,6 +196,7 @@ export async function updateJobApplication(
       }
     } else if (order > oldPositionIndex) {
       const jobsToShiftUp = otherJobsInColumn.slice(oldPositionIndex, order)
+
       for (const job of jobsToShiftUp) {
         const newOrder = Math.max(0, job.order - 100)
         await JobApplication.findByIdAndUpdate(job._id, {
@@ -198,8 +207,9 @@ export async function updateJobApplication(
 
     updatesToApply.order = newOrderValue
   }
-  const updated = await JobApplication.findByIdAndUpdate(id, {
+  const updated = await JobApplication.findByIdAndUpdate(id, updatesToApply, {
     new: true,
   })
+  revalidatePath("/dashboard")
   return { data: JSON.parse(JSON.stringify(updated)) }
 }
