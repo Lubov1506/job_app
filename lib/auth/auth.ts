@@ -11,6 +11,12 @@ export const auth = betterAuth({
   database: mongodbAdapter(db, {
     client,
   }),
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 60,
+    },
+  },
   emailAndPassword: {
     enabled: true,
   },
@@ -19,8 +25,8 @@ export const auth = betterAuth({
       create: {
         after: async (user) => {
           if (user.id) {
-            console.log(user, 'init');
-            
+            console.log(user, "init")
+
             await initializeUserBoard(user.id)
           }
         },

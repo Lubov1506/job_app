@@ -28,8 +28,8 @@ const ColumnSchema = new Schema<IColumn>(
     },
     jobApplications: [
       {
-        type: mongoose.Types.ObjectId,
-        ref: "JobApplications",
+        type: Schema.Types.ObjectId,
+        ref: "JobApplication",
       },
     ],
   },

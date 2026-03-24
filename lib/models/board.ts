@@ -21,7 +21,7 @@ const BoardSchema = new Schema<IBoard>(
     },
     columns: [
       {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Column",
       },
     ],
