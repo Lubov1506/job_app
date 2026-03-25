@@ -13,11 +13,8 @@ import { Button } from "./ui/button"
 import { Label } from "./ui/label"
 import { Input } from "./ui/input"
 import { Textarea } from "./ui/textarea"
-import React, { Dispatch, SetStateAction, useState } from "react"
-import {
-  createJobApplication,
-  updateJobApplication,
-} from "@/lib/actions/job-application"
+import React, { useState } from "react"
+import { updateJobApplication } from "@/lib/actions/job-application"
 import { JobApplication } from "@/lib/models/models.types"
 
 interface EditJobApplicationDialogProps {
@@ -27,16 +24,7 @@ interface EditJobApplicationDialogProps {
   isEdit: boolean
   onOpen: (isEdit: boolean) => void
 }
-const INITIAL_FORM_DATA = {
-  company: "",
-  position: "",
-  location: "",
-  salary: "",
-  jobUrl: "",
-  tags: "",
-  description: "",
-  notes: "",
-}
+
 export default function EditJobApplicationDialog({
   job,
   isEdit,
@@ -70,33 +58,10 @@ export default function EditJobApplicationDialog({
       }
     } catch (error) {
       console.error("Failed to move app")
+      throw error
     }
   }
-  // const [formData, setFormData] = useState(INITIAL_FORM_DATA)
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   // try {
-  //   //   console.log(formData)
-  //   //   const result = await createJobApplication({
-  //   //     ...formData,
-  //   //     columnId,
-  //   //     boardId,
-  //   //     tags: formData.tags
-  //   //       .split(",")
-  //   //       .map((tag) => tag.trim())
-  //   //       .filter((tag) => tag.length > 0),
-  //   //   })
-  //   //   if (!result.error) {
-  //   //     setFormData(INITIAL_FORM_DATA)
-  //   //     onOpen(false)
-  //   //   } else {
-  //   //     console.log(result.error)
-  //   //   }
-  //   // } catch (error) {
-  //   //   console.log(error, "creating job error")
-  //   // }
-  //   onOpen(false)
-  // }
+
   return (
     <Dialog open={isEdit} onOpenChange={onOpen}>
       <DialogTrigger asChild>

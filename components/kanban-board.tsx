@@ -6,9 +6,7 @@ import {
   Calendar,
   CheckCircle2,
   Mic,
-  MoreHorizontal,
   MoreVertical,
-  Trash,
   Trash2,
   XCircle,
 } from "lucide-react"
@@ -103,7 +101,7 @@ function SortableJobCard({
   )
 }
 export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
-  const {columns, moveJob} = useBoard(board)
+  const { columns, moveJob } = useBoard(board)
 
   const sortedColumns = columns?.sort((a, b) => a.order - b.order) || []
   return (
