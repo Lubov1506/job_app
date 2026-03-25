@@ -217,7 +217,7 @@ export default function EditJobApplicationDialog({
               Cancel
             </Button>
             <Button type='submit' variant='default'>
-              Edit Application
+              Save changes
             </Button>
           </DialogFooter>
         </form>

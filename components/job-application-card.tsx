@@ -8,7 +8,10 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
 import { Button } from "./ui/button"
-import { updateJobApplication } from "@/lib/actions/job-application"
+import {
+  deleteJobApplication,
+  updateJobApplication,
+} from "@/lib/actions/job-application"
 import EditJobApplicationDialog from "./edit-job-dialog"
 import { useState } from "react"
 
@@ -20,42 +23,21 @@ export default function JobApplicationCard({
   job,
   columns,
 }: JobApplicationCardProps) {
-  // const [formData, setFormData] = useState({
-  //   company: job.company,
-  //   position: job.position,
-  //   location: job.location || "",
-  //   notes: job.notes || "",
-  //   salary: job.salary || "",
-  //   jobUrl: job.jobUrl || "",
-  //   columnId: job.columnId || "",
-  //   tags: job.tags?.join(", ") || "",
-  //   description: job.description || "",
-  // })
   const [isEdit, setIsEdit] = useState(false)
-  // async function handleUpdate(e: React.FormEvent, formData) {
-  //   e.preventDefault()
-  //   try {
-  //     const result = await updateJobApplication(job._id, {
-  //       ...formData,
-  //       tags: formData.tags
-  //         .split(",")
-  //         .map((tag) => tag.trim())
-  //         .filter((tag) => tag.length > 0),
-  //     })
-  //     console.log(result)
 
-  //     if (!result.error) {
-  //       setIsEdit(false)
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to move app")
-  //   }
-  // }
-  async function handleMove(newColumnId: string) {
+  async function handleMove(newColumnId: string, newStatus:string) {
     try {
       const result = await updateJobApplication(job._id, {
         columnId: newColumnId,
+        status: newStatus
       })
+    } catch (error) {
+      console.error("Failed to move app")
+    }
+  }
+  async function handleDelete(id: string) {
+    try {
+      const result = await deleteJobApplication(id)
     } catch (error) {
       console.error("Failed to move app")
     }
@@ -117,14 +99,17 @@ export default function JobApplicationCard({
                         .map((column, key) => (
                           <DropdownMenuItem
                             key={key}
-                            onClick={() => handleMove(column._id)}
+                            onClick={() => handleMove(column._id, column.name)}
                           >
                             Move to {column.name}
                           </DropdownMenuItem>
                         ))}
                     </>
                   )}
-                  <DropdownMenuItem className='text-destructive'>
+                  <DropdownMenuItem
+                    className='text-destructive'
+                    onClick={() => handleDelete(job._id)}
+                  >
                     <Trash2 className='mr-2 h-4 w-4' />
                     Delete
                   </DropdownMenuItem>
