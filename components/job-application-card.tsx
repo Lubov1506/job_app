@@ -25,21 +25,23 @@ export default function JobApplicationCard({
 }: JobApplicationCardProps) {
   const [isEdit, setIsEdit] = useState(false)
 
-  async function handleMove(newColumnId: string, newStatus:string) {
+  async function handleMove(newColumnId: string, newStatus: string) {
     try {
-      const result = await updateJobApplication(job._id, {
+      await updateJobApplication(job._id, {
         columnId: newColumnId,
-        status: newStatus
+        status: newStatus,
       })
     } catch (error) {
       console.error("Failed to move app")
+      throw error
     }
   }
   async function handleDelete(id: string) {
     try {
-      const result = await deleteJobApplication(id)
+      await deleteJobApplication(id)
     } catch (error) {
       console.error("Failed to move app")
+      throw error
     }
   }
   return (
