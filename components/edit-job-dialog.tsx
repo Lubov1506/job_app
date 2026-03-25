@@ -64,18 +64,9 @@ export default function EditJobApplicationDialog({
 
   return (
     <Dialog open={isEdit} onOpenChange={onOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant='outline'
-          className='w-full mb-4 justify-start text-muted-foreground'
-        >
-          <Plus className='mr-2 h-4 w-4' />
-          Add job
-        </Button>
-      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add job application</DialogTitle>
+          <DialogTitle>Edit job application</DialogTitle>
           <DialogDescription>Track a new job app</DialogDescription>
         </DialogHeader>
         <form className='space-y-4' onSubmit={handleUpdate}>

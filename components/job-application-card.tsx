@@ -13,15 +13,17 @@ import {
   updateJobApplication,
 } from "@/lib/actions/job-application"
 import EditJobApplicationDialog from "./edit-job-dialog"
-import { useState } from "react"
+import React, { useState } from "react"
 
 interface JobApplicationCardProps {
   job: JobApplication
   columns: Column[]
+  dragHandleProps?: React.HTMLAttributes<HTMLElement>
 }
 export default function JobApplicationCard({
   job,
   columns,
+  dragHandleProps,
 }: JobApplicationCardProps) {
   const [isEdit, setIsEdit] = useState(false)
 
@@ -46,7 +48,10 @@ export default function JobApplicationCard({
   }
   return (
     <>
-      <Card className='cursor-pointer transition-shadow hover:shadow-lg bg-white group shadow-sm'>
+      <Card
+        className='cursor-pointer transition-shadow hover:shadow-lg bg-white group shadow-sm'
+        {...dragHandleProps}
+      >
         <CardContent className='p-4'>
           <div className='flex items-center justify-between gap-2'>
             <div className='flex-1 min-w-0'>
