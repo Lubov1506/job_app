@@ -235,3 +235,29 @@ export async function deleteJobApplication(id: string) {
   revalidatePath("/dashboard")
   return { success: true }
 }
+export async function deleteColumn(boardId: string, columnId: string) {
+  const session = await getSession()
+  if (!session?.user) {
+    return { error: "Unauthorized" }
+  }
+  const column = await Column.findById(columnId)
+  const board = await Board.findById(boardId)
+  if (!column) {
+    return { error: "Job column not found" }
+  }
+  if (board.userId !== session.user.id) {
+    return { error: "Unauthorized" }
+  }
+  await JobApplication.deleteMany({
+    columnId: columnId,
+  })
+
+  await Board.findByIdAndUpdate(boardId, {
+    $pull: { columns: columnId },
+  })
+
+  await Column.deleteOne({ _id: columnId })
+
+  revalidatePath("/dashboard")
+  return { success: true }
+}

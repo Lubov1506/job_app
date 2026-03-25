@@ -38,6 +38,8 @@ import {
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { useState } from "react"
+import { Button } from "./ui/button"
+import { deleteColumn } from "@/lib/actions/job-application"
 
 interface KanbanBoardProps {
   board: Board
@@ -94,7 +96,12 @@ function DroppableColumn({
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
               <DropdownMenuItem className='flex justify-between text-destructive'>
-                Delete item <Trash2 className='mr-2 h-4 w-4' />
+                <Button
+                  variant='destructive'
+                  onClick={() => deleteColumn(boardId, column._id)}
+                >
+                  Delete item <Trash2 className='mr-2 h-4 w-4' />
+                </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
